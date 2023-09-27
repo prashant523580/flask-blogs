@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Container for demo purpose -->
+<div class="container mt-8 lg:mt-8 mx-auto md:px-6">
+  <!-- Section: Design Block -->
+  <section class="mb-4">
+    <style>
+      .zoom:hover img {
+        transform: scale(1.1);
+      }
+    </style>
+    <h2 class="mb-12 text-center text-3xl font-bold">Latest articles</h2>
+
+    <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-8">
+      {% for post in posts %}
+      <div class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20"
+        data-te-ripple-init data-te-ripple-color="light">
+        <a href="{{url_for('posts.post', post_id=post.id)}}">
+
+          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/051.jpg"
+            class="w-full align-middle transition duration-300 ease-linear" />
+        </a>
+        <div>
+          <div
+            class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-[hsla(0,0%,0%,0.4)] bg-fixed">
+            <div class="flex h-full items-end justify-start">
+              <div class="m-6 text-white">
+                <a href="{{url_for('posts.post', post_id=post.id)}}"
+                  class="mb-3 text-lg font-bold capitalize">{{post.title}}</a>
+                <p class="flex items-center space-x-1">
+                  <a href="{{url_for('users.user_posts', username=post.author.username)}}" class="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-100">
+                    <img src="{{url_for('static', filename='profile_pics/' + post.author.image_file)}}" loading="lazy"
+                      alt="Photo by Aiony Haust" class="h-full w-full object-contain object-center" />
+                  </a>
+                  <small>Published <u>{{post.date_posted.strftime('%Y-%m-%d')}}</u> by <a
+                      href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a></small>
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- <div
+            class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed transition duration-300 ease-in-out hover:bg-[hsla(0,0%,99%,0.15)]">
+          </div> -->
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <!-- Section: Design Block -->
+</div>
+
+<nav aria-label="Page navigation example" class=" flex justify-center items-center ">
+  <ul class="list-style-none flex space-x-1">
+    <li>
+      <a
+        class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400 ">Previous</a>
+    </li>
+    {% for page_num in posts.iter_pages(left_edge=1,right_edge=1, left_current=1,right_current=2) %}
+    {% if page_num %}
+    {% if posts.page == page_num %}
+    <li>
+      <a class="relative block rounded bg-black px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300  text-white border border-black dark:text-white "
+        href="{{url_for('main.blogs',page=page_num)}}">{{page_num}}
+      </a>
+    </li>
+    {% else %}
+    <li>
+      <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-800 hover:text-white  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white border border-black"
+        href="{{url_for('main.blogs',page=page_num)}}">{{page_num}}
+      </a>
+    </li>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+
+    <li>
+      <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white "
+        href="#!">Next</a>
+    </li>
+  </ul>
+</nav>
+
+{% endblock content %}

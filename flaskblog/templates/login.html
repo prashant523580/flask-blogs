@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="py-8">
+
+    <div class="max-w-screen-md mx-auto my-2 bg-gray-100 rounded overflow-hidden shadow-xl">
+       
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm pt-4">
+            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                alt="Your Company">
+            <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your
+                account</h2>
+        </div>
+        <form class="p-2 space-y-1" method="POST">
+            {{ form.hidden_tag()}}
+         
+            <div class="relative z-0 w-full group">
+                <!-- <input type="email" name="floating_email" id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-gray-600 peer"
+                    placeholder=" " required />
+                <label for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email
+                    address</label> -->
+                    {{form.email.label(class="peer-focus:font-medium  text-sm text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6")}}
+
+                    {% if form.email.errors %}
+                    {{form.email(class="block py-1.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-red-300 appearance-none  dark:border-red-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+    
+                    {{form.email(class="block py-1.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-gray-600 peer")}}
+                    {% endif %}
+            </div>
+    
+            <div class="relative z-0 w-full group">
+                <!-- <input type="password" name="floating_password" id="floating_password"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-gray-600 peer"
+                    placeholder=" " required />
+                <label for="floating_password"
+                class="peer-focus:font-medium absolute text-sm text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label> -->
+                {{form.password.label(class="peer-focus:font-medium  text-sm text-gray-800 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-gray-800 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6")}}
+
+                {% if form.password.errors %}
+                {{form.password(class="block py-2.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-red-300 appearance-none  dark:border-red-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+
+                {{form.password(class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-gray-600 peer")}}
+                {% endif %}
+            </div>
+            <div class="my-2">
+
+                {{ form.remember(class="cursor-pointer") }}
+                {{ form.remember.label(class="text-black select-none cursor-pointer text-sm ml-1")}}
+            </div>
+            {{form.submit(class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer")}}
+                <!-- <button type="submit"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button> -->
+                    <a href="{{url_for('users.reset_request')}}">Forgot Password?</a>
+                </form>
+            
+            <div class="flex items-center justify-center bg-gray-200 p-4">
+                <p class="text-center text-sm text-gray-500">Don't have an account? <a href="{{ url_for('users.register')}}" class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700">Register</a></p>
+              </div>
+        </div>
+</div>
+
+{% endblock content %}

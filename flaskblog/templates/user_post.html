@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="bg-white py-6 sm:py-8 lg:py-8">
+    <div class="mx-auto max-w-screen-2xl px-4 md:px-8 space-y-1">
+      <!-- text - start -->
+      <div class="flex items-center justify-between my-2 py-2 space-x-1 border-b-2">
+        <div class="flex flex-col">
+
+            <div class="flex items-center space-x-1">
+                
+                <img
+                src="{{url_for('static', filename='profile_pics/' + user.image_file)}}"
+                class="w-20 h-20 object-cover rounded-full shadow-lg"
+                alt="Avatar" />
+                <div class="">
+                    <h1 class="font-bold text-2xl">{{user.username}} </h1>
+                    <span class="text-lg font-medium">Total Post: {{posts.total}}</span>
+                </div>
+            </div>
+        </div>
+        </div>
+      <div  class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
+          {% for post in posts %}
+          <div class="flex flex-col overflow-hidden rounded-lg border bg-white">
+              <a href="{{url_for('posts.post', post_id=post.id)}}" class="group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
+                <img src="https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=600" loading="lazy" alt="Photo by Martin Sanchez" class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
+              </a>
+      
+              <div class="flex flex-1 flex-col p-4 sm:p-6">
+                <h2 class="mb-2 text-lg font-semibold text-gray-800">
+                  <a href="{{url_for('posts.post', post_id=post.id)}}" class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">{{post.title}}</a>
+                </h2>
+      
+                <p class="mb-8 text-gray-500">{{post.content}}</p>
+      
+                <div class="mt-auto flex items-end justify-between">
+                    <a href="{{url_for('users.user_posts', username=post.author.username)}}" class="flex items-center gap-2">
+                        <div class="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-100">
+                          <img src="{{url_for('static', filename='profile_pics/' + post.author.image_file)}}" loading="lazy" alt="Photo by Aiony Haust" class="h-full w-full object-contain object-center" />
+                        </div>
+          
+                        <div>
+                          <span class="block text-indigo-500">{{post.author.username}}</span>
+                          <span class="block text-sm text-gray-400">{{post.date_posted.strftime('%Y-%m-%d')}}</span>
+                        </div>
+                      </a>
+      
+                  <span class="rounded border px-2 py-1 text-sm text-gray-500">Article</span>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+        
+      </div>
+      <nav aria-label="Page navigation example" class="my-4 flex justify-center items-center border">
+        <ul class="list-style-none flex space-x-1">
+          <li>
+            <a
+              class="pointer-events-none relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400 "
+              >Previous</a
+            >
+          </li>
+          {% for page_num in posts.iter_pages(left_edge=1,right_edge=1, left_current=1,right_current=2) %}
+          {% if page_num  %}
+            {% if posts.page == page_num %}
+            <li>
+              <a
+                class="relative block rounded bg-black px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300  text-white border border-black dark:text-white "
+                 href="{{url_for('user_posts',username=user.username,page=page_num)}}">{{page_num}}
+                 </a>
+            </li>
+            {% else %}
+            <li>
+              <a
+                class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100  dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white border border-black"
+                 href="{{url_for('user_posts',username=user.username,page=page_num)}}">{{page_num}}
+                 </a>
+            </li>
+            {% endif %}
+          {% else %}
+            ...
+          {% endif %}
+      {% endfor %}
+         
+          <li>
+            <a
+              class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white "
+              href="#!"
+              >Next</a
+            >
+          </li>
+        </ul>
+      </nav>
+  </div>
+
+{% endblock content %}
